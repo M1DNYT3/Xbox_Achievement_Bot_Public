@@ -1,0 +1,82 @@
+name: Liquibase Update
+# 1
+# Controls when the workflow will run
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - feature
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      changelog:
+        description: 'Filled the changelog reference?'
+        type: boolean
+        required: true
+# 2
+jobs:
+  liquibase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to instance via SSH action
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHKEY }}
+          script: |
+              # Define DB port by environment
+              case "${{ github.ref_name }}"
+              in
+                "main")
+                  export PGPORT="30003"
+                  ;;
+                "develop")
+                  export PGPORT="30002"
+                  ;;
+                "feature")
+                  export PGPORT="30001"
+                  ;;
+                *)
+                  echo "No port for this branch"
+                  ;;
+              esac
+              # Set DB envs
+              export LIQUIBASE_COMMAND_URL=jdbc:postgresql://localhost:$PGPORT/${{ github.ref_name }}
+              export LIQUIBASE_COMMAND_USERNAME=${{secrets.POSTGRES_USER}}
+              export LIQUIBASE_COMMAND_PASSWORD=${{secrets.POSTGRES_PASSWORD}}
+              # Runs ssh-agent
+              eval "$(ssh-agent -s)"
+              # Adds private key to use it in git
+              ssh-add ${{ secrets.GIT_AUTH_SSH }}
+              # Goes into dedicated liquibase folder, removes old repo folder if exists
+              cd docker/liquibase
+              rm -rf XboxP3_BudkaBot
+              # Clone repositories
+              git clone ${{ secrets.GIT_REPO }}
+              # Open folder
+              cd XboxP3_BudkaBot
+              # Checkout to the affected branch
+              git checkout ${{ github.ref_name }}
+              cd liquibase/project
+              # Execute the validation and check status
+              liquibase validate
+              lbstatus=$(liquibase status)
+              # Check if there are changes to the DB
+              if echo "$lbstatus" | grep "changesets have not been applied"; then
+                echo "Trying to form an update."
+                liquibase update-sql
+                echo "Applying the formed update."
+                liquibase update
+                cd .. && rm -rf XboxP3_BudkaBot
+              else
+                echo "No changes were found, ignoring the job."
+                # Remove the cloned repo
+                cd .. && rm -rf XboxP3_BudkaBot
+              fi
+  ci:
+    needs: liquibase
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit

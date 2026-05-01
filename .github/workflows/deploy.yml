@@ -1,0 +1,96 @@
+name: CI
+# 1
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on the completion of other workflow
+  workflow_call:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      no_liquibase:
+        description: 'Confirm that there are no liquibase changes.'
+        type: boolean
+      version:
+        description: 'Enter the new application version'
+        required: true
+# 2
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to instance via SSH action
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHKEY }}
+          script: |
+              # Set DB envs
+              export POSTGRES_USER=${{secrets.POSTGRES_USER}}
+              export POSTGRES_PASSWORD=${{secrets.POSTGRES_PASSWORD}}
+              export POSTGRES_SCHEMA=${{secrets.POSTGRES_SCHEMA}}
+              export POSTGRES_DATABASE=${{ github.ref_name }}
+              # Set common app envs
+              export XBL_USER=${{secrets.XBL_USER}}
+              export XBL_PASSWORD=${{secrets.XBL_PASSWORD}}
+              export BOT_ADMIN_ID=${{secrets.BOT_ADMIN_ID}}
+              # Set branch-specific app envs
+              case "${{ github.ref_name }}"
+              in
+                "main")
+                  export BOT_TOKEN=${{secrets.BOT_TOKEN_PROD}}
+                  export BOT_ID=${{secrets.BOT_ID_PROD}}
+                  ;;
+                "develop")
+                  export BOT_TOKEN=${{secrets.BOT_TOKEN_DEV}}
+                  export BOT_ID=${{secrets.BOT_ID_DEV}}
+                  ;;
+                "feature")
+                  export BOT_TOKEN=${{secrets.BOT_TOKEN_DEV}}
+                  export BOT_ID=${{secrets.BOT_ID_DEV}}
+                  ;;
+                *)
+                  echo "No exports for this branch"
+                  ;;
+              esac
+              # Runs ssh-agent
+              eval "$(ssh-agent -s)"
+              # Adds private key to use it in git
+              ssh-add ${{ secrets.GIT_AUTH_SSH }}
+              # Goes into dedicated docker folder
+              cd docker
+              # Removes the previous repo in case there's a leftover
+              rm -rf XboxP3_BudkaBot
+              # Clone repositories
+              git clone ${{ secrets.GIT_REPO }}
+              # Open folder
+              cd XboxP3_BudkaBot
+              # Checkout to the affected branch
+              git checkout ${{ github.ref_name }}
+              # Stop and remove old container, run compose for env
+              case "${{ github.ref_name }}"
+              in
+                "main")
+                  docker stop tg-app-production
+                  docker rm tg-app-production
+                  docker-compose up -d --build tg-app-production
+                  ;;
+                "develop")
+                  docker stop tg-app-development
+                  docker rm tg-app-development
+                  docker-compose up -d --build tg-app-development
+                  ;;
+                "feature")
+                  docker stop tg-app-feature
+                  docker rm tg-app-feature
+                  docker-compose up -d --build tg-app-feature
+                  docker stop tg-app-feature
+                  docker restart tg-app-development
+                  ;;
+                *)
+                  echo "No containers for this branch"
+                  ;;
+              esac
+              # Remove the cloned repo
+              cd .. && rm -rf XboxP3_BudkaBot

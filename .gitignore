@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+config/*
+!config/index.js
+.idea
+
+.env.*
+!.env.sample

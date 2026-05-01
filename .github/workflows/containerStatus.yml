@@ -1,0 +1,56 @@
+name: Container Status
+# 1
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        type: choice
+        description: 'Container to start (stops the other)'
+        options:
+          - feature
+          - develop
+        required: true
+      stop_all:
+        type: boolean
+        description: 'Option to stop both containers (ignores the container choice)'
+
+# 2
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to instance via SSH action
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHKEY }}
+          script: |
+              case "${{ inputs.stop_all }}"
+              in
+                "true")
+                  docker stop tg-app-development
+                  docker stop tg-app-feature
+                  ;;
+                "false")
+                  case "${{ inputs.branch_name }}"
+                  in
+                    "feature")
+                      docker stop tg-app-development
+                      docker start tg-app-feature
+                      ;;
+                    "develop")
+                      docker stop tg-app-feature
+                      docker start tg-app-development
+                      ;;
+                    *)
+                      echo "Impossible"
+                      ;;
+                  esac
+                  ;;
+                *)
+                  echo "Also Impossible, wtf man?"
+                  ;;
+              esac

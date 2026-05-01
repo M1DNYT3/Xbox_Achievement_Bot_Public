@@ -1,0 +1,30 @@
+module.exports = {
+    tgNotRegistered: "Current user is not registered in the bot.",
+    tgAliasNotRegistered: "Provided alias user is not registered in the bot.",
+    tgChatNotFound: "400: Bad Request: chat not found",
+    tgKickedFromGroup: "403: Forbidden: bot was kicked from the group chat",
+    tgKickedFromSuperGroup: "403: Forbidden: bot was kicked from the supergroup chat",
+    tgAlreadyRegistered: 'duplicate key value violates unique constraint "telegram_users_pk"',
+    notBotAdmin: "Command could only be used by the bot creator",
+
+    xbotDuplicate: 'duplicate key value violates unique constraint "unique_game_id"',
+    xbotNotRegistered: "Selected user isn't registered in the game for this chat.",
+    xbotNoChatData: "No xbot game related data has been returned for a selected chat",
+
+    xblNoSubString: "User hasn't entered a gamertag string required by command",
+    updateLimitExceeded: "User has already updated Xbox Live data today.",
+    gamertagNotFound: "Unable to get data by provided gamertag in the Xbox Live service.",
+    gamertagOccupied: "Another user have the provided gamertag",
+    noGamertag: "The current user doesn't have a gamertag in the database",
+    noGamerscore: "The current user doesn't have a gamerscore in the database",
+    xblCommunicationError: "Haven't recieved response from the Xbox Live service",
+
+    noChatConfig: "Selected chat doesn't have a config.",
+    notKeyboardAuthor: "Selected user is not an author of command message.",
+    sameMsgContent: "400: Bad Request: message is not modified: specified new message content and reply markup are exactly the same as a current content and reply markup of the message",
+    notEnoughUsers: "Not enough users in the provided array",
+    xblNoAuthCredentials: "Unable to get Xbox Live credentials for user operation",
+    systemXblNoAuthCredentials: "Unable to get Xbox Live credentials for system operation",
+    noReplyMessage: "Reply message is not selected",
+    notBotMessage: "Current selected message doesn't belong to the bot",
+}

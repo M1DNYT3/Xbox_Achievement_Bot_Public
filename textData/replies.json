@@ -1,0 +1,102 @@
+{
+    "xblUpdateStartAdmin": "Initiating the Xbox Live data update.",
+    "monthlySnapshotSuccess": "The monthly snapshot has been made successfully..",
+    "monthlySnapshotError": "Failed to make a monthly snapshot. Next message will print an error log.",
+    "xbotDailyCleanStart": "Resetting the \"Xbot\" game daily play status.",
+    "xbotDailyCleanDone": "Daily play status has been reset for all group chats.",
+    "xbotDailyError": "An error occured during the play status clean-up. Next message will print an error log.",
+    "xbotYearlyCleanStart": "Starting an \"Xbot\" game yearly cleanup.",
+    "xbotYearlyCleanDone": "The yearly \"Xbot\" clean-up finished successfully. Happy New Year!",
+    "xbotYearlyCleanError": "Something went wrong. Right during the New Year, damn. Next message will print an error log.",
+
+    "userIsRegistered": "Another one for the team Xbox! Greeting!",
+    "xbotJoinSuccess": "You have been registered in the mini-game.",
+    "tgUserInfoUpdated": "Telegram info has been updated successfully.",
+    "manualMonthlySnapshotSuccess": "Made a snapshot for your monthly Xbox Live score.",
+
+    "xblUpdateStart": "Attemting to update your Xbox Live gamerscore data.",
+    "xblUpdateDone": "Gamerscore retrieved successfully!",
+    "liveLbStart": "Generating leaderboard for a current group chat. Please wait.",
+    "liveLbMonthlyStart": "Generating a monthly leaderboard for a current group chat. Please wait.",
+
+    "xbotAlltimeLbStart": "Let's see who's the most loyal Xbox fan in the world.",
+    "xbotLbStart": "Okay, let's see what we got!",
+    "xboxPower": "Xbox Power!",
+
+    "notBotAdmin": "You are not the bot developer.",
+    "notBotMessage": "It's only possible to delete bot's messages.",
+    "noReplyMessage": "This command only works with replies.",
+    "notKeyboardAuthor": "Only keyboard's author can interact with it.",
+    "keyboardDelete": {
+        "baseText": "This inline keyboard was deleted because ",
+        "byTtl": "it has expired. ",
+        "byUser": "author finished working with it. ",
+        "useAgain": "Use the command again to interact with this keyboard."
+    },
+
+
+    "unexpectedError": "Непредвиденная ошибка. Сообщите разработчику, который работал над ботом.",
+    "notEnoughGamers": "База данных отдала недостаточное количество пользователей для построения таблицы (минимум 3 участника).",
+
+    "currentUserNotRegistered": "Ты не зарегистрирован. Воспользуйся командой /register.",
+    "replyUserNotRegistered": "Данный пользователь не зарегистрирован. Сперва он должен использовать команду /register.",
+    "userAlreadyRegistered": "Ты уже зарегистрирован!",
+    "xbotUnpaused": "Ты снова участвуешь в игре в данном чате.",
+    "xbotPaused": "Ты больше не участвуешь в игре в данном чате.",
+    "noGamertag": "Ты не указал геймертег. Используй команду /gamertag_set.",
+    "noGamerscore": "Счёт игрока ещё не обновился, используй команду /live_upd.",
+    "gamertagNotFound": "Не удалось найти твой геймертег в Xbox Live.\nПопробуй ещё раз, возможно сервис просто не ответил.",
+    "gamertagOccupied": "Такой геймертег указан у другого пользователя. Укажи свой геймертег.",
+    "xblNoSubString": "Напиши команду в формате: `/gamertag_set Твой Тег`.\nПоддерживаются все символы и пробелы.",
+    "updateLimitExceeded": "Ты сегодня уже обновлял счёт!\nЛимит ручных обновлений сбросится в 3 ночи по МСК.",
+
+    "notGroup": "Данная команда доступна только в групповом чате.",
+    "notChatAdmin": "Данную команду может выполнить только создатель или администратор группового чата.",
+    "botAdminOnly": "Только создатель бота может использовать эту команду.",
+
+    "xbotUserInactive": "Нашёл биллибоя дня, но он вышел из этого чата. Помечаю юзера неактивным.",
+    "xbotInactiveFinished": "Пометил юзера неактивным. Выполни команду снова.",
+    "xbotInactiveFinishedErr": "Произошла непредвиденная ошибка, но ты всё равно выполни команду снова.",
+
+    "createChatConfig": "У чата нет конфига, создаю старндартную конфигурацию.",
+    "confirmNotification": "Вы собираетесь сделать уведомление на всех пользователей, подтвердите отправку уведомления с текстом:",
+
+    "monthlyScoreUpdate": "\nТы не зарегистрирован в боте или твой счёт за месяц не обновился.\nИспользуй команду /monthly_score.\n",
+    "scoreUpdate": "\nТы не зарегистрирован в боте или твой счёт ещё не обновился.\nИспользуй команду /live_upd.\n",
+    "emptyScore": "\nТы не зарегистрирован в игре или у тебя нулевой счёт.\nИспользуй команду /xbot_me, чтобы узнать свой статус.\n",
+
+    "xblSystemAuthError": "Ошибка авторизации в Xbox Live (Unauthorized).\nНе удалось получить даные о пользователях.",
+    "xblUnexpectedError": "Произошла ошибка при коммуникации с Xbox Live. Следующим сообщением будет выведен лог.",
+    "xblUserFetchError": "Не удалось получить токен в Xbox Live. Попробуйте выполнить команду позже.",
+    "xblSystemFetchError": "Не удалось получить токен в Xbox Live.",
+
+    "xbotAlreadyRegistered": "Ты уже зарегистрирован в этом чате!",
+    "xbotNotRegistered": "Ты не участник игры. Используй команду /xbot_join.",
+    "xbotNoChatData": "Не удалось получить данные по чату. Попробуй выполнить команду ещё раз.",
+    "xbotNotEnoughUsers": "В чате недостаточно участников для запуска игры. Требуется минимум 3 человека.",
+
+    "xblLbData": {
+        "global": {
+            "mainEntryTop": "Топ 10 игроков чата:\n\n",
+            "mainEntry": "Таблица участников чата:\n\n",
+            "scoreDataColumn": "gamerscore"
+        },
+        "cycle": {
+            "mainEntryTop": "Топ 10 игроков чата за месяц:\n\n",
+            "mainEntry": "Таблица участников чата за месяц:\n\n",
+            "scoreDataColumn": "month_score"
+        }
+    },
+    "xbotLbData": {
+        "global": {
+            "mainEntryTop": "Топ 10 <b>биллибоев</b> чата за всё время:\n\n",
+            "mainEntry": "Таблица <b>биллибоев</b> чата за всё время:\n\n",
+            "scoreDataColumn": "all_time_wins"
+        },
+        "cycle": {
+            "mainEntryTop": "Топ 10 <b>биллибоев</b> чата за текущий год:\n\n",
+            "mainEntry": "Таблица <b>биллибоев</b> чата за текущий год:\n\n",
+            "scoreDataColumn": "current_year_wins"
+        }
+    }
+}

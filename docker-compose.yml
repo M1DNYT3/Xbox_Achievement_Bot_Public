@@ -1,0 +1,144 @@
+version: '3'
+
+services:
+
+# feature env
+  tg-app-feature:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tg-app-feature
+    container_name: tg-app-feature
+    restart: unless-stopped
+    environment:
+      - PGUSER=$POSTGRES_USER
+      - PGPASSWORD=$POSTGRES_PASSWORD
+      - PGHOST=db-feature
+      - PGPORT=30001
+      - PGDATABASE=$POSTGRES_DATABASE
+      - BOT_ID=$BOT_ID
+      - BOT_TOKEN=$BOT_TOKEN
+      - BOT_ADMIN_ID=$BOT_ADMIN_ID
+      - XBL_USER=$XBL_USER
+      - XBL_PASSWORD=$XBL_PASSWORD
+    volumes:
+      - .:/home/node/tg-app-feature
+    depends_on:
+      db-feature:
+        condition: service_healthy
+  db-feature:
+    image: postgres:14.1-alpine
+    container_name: db-feature
+    restart: on-failure
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DATABASE: $POSTGRES_DATABASE
+      POSTGRES_SCHEMA: $POSTGRES_SCHEMA
+      PGPORT: "30001"
+    ports:
+      - "30001:30001"
+    volumes:
+      - db-feature:/var/lib/postgresql/data
+      - ./create-db.sh:/docker-entrypoint-initdb.d/create-db.sh
+    healthcheck:
+      test: pg_isready -Upostgres
+      interval: 1s
+      timeout: 1s
+      retries: 5
+
+# develop env
+  tg-app-development:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tg-app-development
+    container_name: tg-app-development
+    restart: unless-stopped
+    environment:
+      - PGUSER=$POSTGRES_USER
+      - PGPASSWORD=$POSTGRES_PASSWORD
+      - PGHOST=db-development
+      - PGPORT=30002
+      - PGDATABASE=$POSTGRES_DATABASE
+      - BOT_ID=$BOT_ID
+      - BOT_TOKEN=$BOT_TOKEN
+      - BOT_ADMIN_ID=$BOT_ADMIN_ID
+      - XBL_USER=$XBL_USER
+      - XBL_PASSWORD=$XBL_PASSWORD
+    volumes:
+      - .:/home/node/tg-app-development
+    depends_on:
+      db-development:
+        condition: service_healthy
+  db-development:
+    image: postgres:14.1-alpine
+    container_name: db-development
+    restart: on-failure
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DATABASE: $POSTGRES_DATABASE
+      POSTGRES_SCHEMA: $POSTGRES_SCHEMA
+      PGPORT: "30002"
+    ports:
+      - "30002:30002"
+    volumes:
+      - db-development:/var/lib/postgresql/data
+      - ./create-db.sh:/docker-entrypoint-initdb.d/create-db.sh
+    healthcheck:
+      test: pg_isready -Upostgres
+      interval: 1s
+      timeout: 1s
+      retries: 5
+
+# main env
+  tg-app-production:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tg-app-production
+    container_name: tg-app-production
+    restart: unless-stopped
+    environment:
+      - PGUSER=$POSTGRES_USER
+      - PGPASSWORD=$POSTGRES_PASSWORD
+      - PGHOST=db-production
+      - PGPORT=30003
+      - PGDATABASE=$POSTGRES_DATABASE
+      - BOT_ID=$BOT_ID
+      - BOT_TOKEN=$BOT_TOKEN
+      - BOT_ADMIN_ID=$BOT_ADMIN_ID
+      - XBL_USER=$XBL_USER
+      - XBL_PASSWORD=$XBL_PASSWORD
+    volumes:
+      - .:/home/node/tg-app-production
+    depends_on:
+      db-production:
+        condition: service_healthy
+  db-production:
+    image: postgres:14.1-alpine
+    container_name: db-production
+    restart: on-failure
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DATABASE: $POSTGRES_DATABASE
+      POSTGRES_SCHEMA: $POSTGRES_SCHEMA
+      PGPORT: "30003"
+    ports:
+      - "30003:30003"
+    volumes:
+      - db-production:/var/lib/postgresql/data
+      - ./create-db.sh:/docker-entrypoint-initdb.d/create-db.sh
+    healthcheck:
+      test: pg_isready -Upostgres
+      interval: 1s
+      timeout: 1s
+      retries: 5
+
+
+volumes:
+  db-feature: { }
+  db-development: { }
+  db-production: { }

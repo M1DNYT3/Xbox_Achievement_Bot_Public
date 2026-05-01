@@ -1,0 +1,20 @@
+{
+    "name": "xboxp3-telegram-bot",
+    "version": "0.9.7",
+    "description": "Telegram bot made for use in Xbox related group chats.",
+    "author": "M1DNYT3",
+    "main": "botScript/",
+    "scripts": {
+        "xbot": "node botScript/"
+    },
+    "dependencies": {
+        "@xboxreplay/xboxlive-api": "^3.4.3",
+        "@xboxreplay/xboxlive-auth": "^4.0.0",
+        "cron": "^3.0.0-beta.2",
+        "dotenv": "^16.3.1",
+        "lodash": "^4.17.21",
+        "pg": "8.7.1",
+        "telegraf": "^4.8.6",
+        "telegraf-throttler": "^0.6.0"
+    }
+}
